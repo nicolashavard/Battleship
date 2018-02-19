@@ -47,10 +47,9 @@
             var i = 0;
 
             while (i < ship.getLife()) {
-                this.grid[y][x + i] = ship.getId();
+                this.grid[y][x - Math.floor(ship.getLife() / 2) + i] = ship.getId();
                 i += 1;
             }
-
             return true;
         },
         clearPreview: function () {
@@ -88,6 +87,13 @@
             });
         },
         renderShips: function (grid) {
+        },
+        renderMiniMap: function (game) {
+            var  fleet = game.players[0].fleet;
+            var minigrid = game.miniGrid;
+            fleet.forEach(function(ship){
+                minigrid.innerHTML += ship.dom.outerHTML;
+            });
         }
     };
 

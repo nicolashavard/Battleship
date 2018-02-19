@@ -45,7 +45,14 @@
         setActiveShipPosition: function (x, y) {
             var ship = this.fleet[this.activeShip];
             var i = 0;
+            var j = 0;
 
+            while (j < ship.getLife()) {
+                if (this.grid[y][x - Math.floor(ship.getLife() / 2) + j] !== 0) {
+                    return false;
+                }
+                j++;
+            }
             while (i < ship.getLife()) {
                 this.grid[y][x - Math.floor(ship.getLife() / 2) + i] = ship.getId();
                 i += 1;

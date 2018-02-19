@@ -89,11 +89,12 @@
         renderShips: function (grid) {
         },
         renderMiniMap: function (game) {
-            var  fleet = game.players[0].fleet;
+            var fleet = game.players[0].fleet;
             var minigrid = game.miniGrid;
             fleet.forEach(function(ship){
                 minigrid.innerHTML += ship.dom.outerHTML;
             });
+            minigrid.style.marginTop = -150 - (fleet.length * 15)+ "px" ;
         }
     };
 

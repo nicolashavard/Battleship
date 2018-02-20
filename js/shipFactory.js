@@ -20,6 +20,7 @@
         name: null,
         id: null,
         dom: null,
+        direction: null,
         setName: function (name) {
             this.name = name;
         },
@@ -41,15 +42,21 @@
         getId: function () {
             return this.id;
         },
+        setDirection: function (dir) {
+            this.direction = dir;
+        },
+        getDirection: function() {
+            return this.direction;
+        },
         init: function () {
             this.id = getShipNewIndex();
-
             this.dom = document.createElement('div');
             this.dom.style.height = "" + utils.CELL_SIZE + "px";
             this.dom.style.width = "" + utils.CELL_SIZE * this.life + "px";
-            this.dom.style.position = "relative";
+            this.dom.style.position = "absolute";
             this.dom.style.opacity = "0.8";
             this.dom.style.backgroundColor = this.color;
+            this.direction = "horizontal";
         }
     };
 

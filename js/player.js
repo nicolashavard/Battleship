@@ -46,18 +46,34 @@
             var ship = this.fleet[this.activeShip];
             var i = 0;
             var j = 0;
-
-            while (j < ship.getLife()) {
-                if (this.grid[y][x - Math.floor(ship.getLife() / 2) + j] !== 0) {
-                    return false;
+            if(ship.getDirection() === "horizontal") {
+                while (j < ship.getLife()) {
+                    if (this.grid[y][x - Math.floor(ship.getLife() / 2) + j] !== 0) {
+                        return false;
+                    }
+                    j++;
                 }
-                j++;
+                while (i < ship.getLife()) {
+                    this.grid[y][x - Math.floor(ship.getLife() / 2) + i] = ship.getId();
+                    i += 1;
+                }
+                console.debug(ship);
+                return true;
             }
-            while (i < ship.getLife()) {
-                this.grid[y][x - Math.floor(ship.getLife() / 2) + i] = ship.getId();
-                i += 1;
+            else {
+                while (j < ship.getLife()) {
+                    if (this.grid[y - Math.floor(ship.getLife() / 2) + j][x] !== 0) {
+                        return false;
+                    }
+                    j++;
+                }
+                while (i < ship.getLife()) {
+                    this.grid[y - Math.floor(ship.getLife() / 2) + i][x] = ship.getId();
+                    i += 1;
+                }
+                console.debug(ship);
+                return true;
             }
-            return true;
         },
         clearPreview: function () {
             this.fleet.forEach(function (ship) {
@@ -101,7 +117,6 @@
             fleet.forEach(function(ship){
                 minigrid.innerHTML += ship.dom.outerHTML;
             });
-            minigrid.style.marginTop = -150 - (fleet.length * 15)+ "px" ;
         }
     };
 

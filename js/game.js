@@ -124,6 +124,17 @@
             // on ajoute des acouteur uniquement sur la grid (délégation d'événement)
             this.grid.addEventListener('mousemove', _.bind(this.handleMouseMove, this));
             this.grid.addEventListener('click', _.bind(this.handleClick, this));
+            this.grid.addEventListener('contextmenu', _.bind(this.handleRightClick, this));
+        },
+        displayPreview: function (ship, e) {
+            if(ship.getDirection() === "horizontal") {
+                ship.dom.style.top = "" + (utils.eq(e.target.parentNode)) * utils.CELL_SIZE + "px";
+                ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
+            }
+            else {
+                ship.dom.style.top = "" + (utils.eq(e.target.parentNode)) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
+                ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE + "px";
+            }
         },
         handleMouseMove: function (e) {
             // on est dans la phase de placement des bateau
@@ -138,8 +149,7 @@
                 }
 
                 // décalage visuelle, le point d'ancrage du curseur est au milieu du bateau
-                ship.dom.style.top = "" + (utils.eq(e.target.parentNode)) * utils.CELL_SIZE - (600 + this.players[0].activeShip * 60) + "px";
-                ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
+                this.displayPreview(ship, e);
             }
         },
         handleClick: function (e) {
@@ -160,11 +170,14 @@
                                 self.stopWaiting();
                                 self.renderMiniMap();
                                 self.players[0].clearPreview();
+                                console.log(self.players[0].grid);
                                 self.goNextPhase();
+
                             }, function () {
                                 self.stopWaiting();
                                 // sinon, on efface les bateaux (les positions enregistrées), et on recommence
                                 self.players[0].resetShipPlacement();
+
                             });
                         }
                     }
@@ -172,6 +185,22 @@
                 } else if (this.getPhase() === this.PHASE_PLAY_PLAYER) {
                     this.players[0].play(utils.eq(e.target), utils.eq(e.target.parentNode));
                 }
+            }
+        },
+        handleRightClick: function (e) {
+            if(this.getPhase() === this.PHASE_INIT_PLAYER)  {
+                var ship = this.players[0].fleet[this.players[0].activeShip];
+                if(ship.getDirection() === "horizontal") {
+                    ship.setDirection("vertical");
+                    ship.dom.style.height = "" + utils.CELL_SIZE * ship.life + "px";
+                    ship.dom.style.width = "" + utils.CELL_SIZE + "px";
+                }
+                else {
+                    ship.setDirection("horizontal");
+                    ship.dom.style.height = "" + utils.CELL_SIZE + "px";
+                    ship.dom.style.width = "" + utils.CELL_SIZE * ship.life + "px";
+                }
+                this.displayPreview(ship, e);
             }
         },
         // fonction utlisée par les objets représentant les joueurs (ordinateur ou non)
@@ -223,6 +252,9 @@
     };
     // point d'entrée
     document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        }, true);
         game.init();
     });
 

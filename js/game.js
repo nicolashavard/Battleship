@@ -88,7 +88,7 @@
             case this.PHASE_INIT_OPPONENT:
                 this.wait();
                 utils.info("En attente de votre adversaire");
-                this.players[1].isShipOk(function () {
+                this.players[1].areShipsOk(function () {
                     self.stopWaiting();
                     self.goNextPhase();
                 });

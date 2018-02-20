@@ -23,6 +23,9 @@
                 return null;
             }
         },
+        randomInt: function (min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        },
         // créer un tableau à deux dimension, chaque élément du tableau est définie à la valeur (optionelle) "value" (vaut 0 par défaut)
         createGrid: function (lines, columns, value) {
             var val = value !== undefined

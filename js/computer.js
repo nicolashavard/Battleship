@@ -54,7 +54,7 @@
                     hp = ship.getLife();
                     if(utils.randomInt(0, 1) === 1) // vertical
                     {
-                        y = y + 1 - hp;
+                        y = 10 - hp;
                         coordX = utils.randomInt(0, x);
                         coordY = utils.randomInt(0, y);
                         console.log("Vertical ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+coordX);
@@ -89,7 +89,7 @@
                     }
                     else // horizontal
                     {
-                        x = x + 1 - hp;
+                        x = 10 - hp;
                         coordX = utils.randomInt(0, x);
                         coordY = utils.randomInt(0, y);
                         console.log("Horizontal ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+coordX);

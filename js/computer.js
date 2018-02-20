@@ -20,25 +20,6 @@
                 });
             }, 2000);
         },
-        isShipOk: function (x, y, coordY, coordX, ship) {
-            var self = this;
-            var hp = ship.getLife();
-            if(self.grid[coordY][coordX] === 0) {
-                hp--;
-                var line = coordY;
-                while(hp > 0) {
-                    if(self.grid[line+1][coordX] !== 0) {
-                        return false;
-                    }
-                    hp--;
-                    line++;
-                }
-                return true;
-            }
-            else {
-                return false;
-            }
-        },
         areShipsOk: function (callback) {
             var self = this;
 

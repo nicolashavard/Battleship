@@ -35,10 +35,18 @@
         // quand il est attaqué le joueur doit dire si il a un bateaux ou non à l'emplacement choisi par l'adversaire
         receiveAttack: function (col, line, callback) {
             var succeed = false;
-
-            if (this.grid[line][col] !== 0) {
+            if (this.grid[line][col] === 'x') {
+                succeed = "alreadyHit";
+            }
+            else if (this.grid[line][col] === '.') {
+                succeed = "alreadyMiss";
+            }
+            else if (this.grid[line][col] !== 0) {
                 succeed = true;
-                this.grid[line][col] = 0;
+                this.grid[line][col] = 'x';
+            }
+            else {
+                this.grid[line][col] = '.';
             }
             callback.call(undefined, succeed);
         },

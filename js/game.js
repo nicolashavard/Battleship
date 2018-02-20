@@ -80,8 +80,11 @@
                 // detection de la fin de partie
                 if (!this.gameIsOver()) {
                     // le jeu n'est pas terminé on recommence un tour de jeu
-                    this.currentPhase = this.phaseOrder[this.playerTurnPhaseIndex];
+                    this.currentPhase = this.phaseOrder[2];
+                    utils.info("A vous de jouer, choisissez une case !");
+                    break;
                 }
+                break;
             case this.PHASE_INIT_PLAYER:
                 utils.info("Placez vos bateaux");
                 break;
@@ -222,14 +225,20 @@
             // on demande à l'attaqué si il a un bateaux à la position visée
             // le résultat devra être passé en paramètre à la fonction de callback (3e paramètre)
             target.receiveAttack(col, line, function (hasSucceed) {
-                if (hasSucceed) {
+
+                if (hasSucceed === 'alreadyHit') {
+                    msg += "Déja touché...";
+                }
+                else if (hasSucceed === 'alreadyMiss') {
+                    msg += "Déja raté...";
+                }
+                else if (hasSucceed) {
                     msg += "Touché !";
-                } else {
+                }
+                else {
                     msg += "Manqué...";
                 }
-
                 utils.info(msg);
-
 
                 // on invoque la fonction callback (4e paramètre passé à la méthode fire)
                 // pour transmettre à l'attaquant le résultat de l'attaque
@@ -246,7 +255,6 @@
 
         },
         renderMap: function () {
-            console.log('test');
             this.players[0].renderTries(this.grid);
         },
         renderMiniMap: function () {

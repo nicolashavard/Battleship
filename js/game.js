@@ -170,7 +170,7 @@
                                 self.stopWaiting();
                                 self.renderMiniMap();
                                 self.players[0].clearPreview();
-                                console.log(self.players[0].grid);
+                                // console.log(self.players[0].grid);
                                 self.goNextPhase();
 
                             }, function () {
@@ -188,7 +188,7 @@
             }
         },
         handleRightClick: function (e) {
-            if(this.getPhase() === this.PHASE_INIT_PLAYER)  {
+            if(this.getPhase() === this.PHASE_INIT_PLAYER) {
                 var ship = this.players[0].fleet[this.players[0].activeShip];
                 if(ship.getDirection() === "horizontal") {
                     ship.setDirection("vertical");
@@ -230,9 +230,11 @@
 
                 utils.info(msg);
 
+
                 // on invoque la fonction callback (4e paramètre passé à la méthode fire)
                 // pour transmettre à l'attaquant le résultat de l'attaque
                 callback(hasSucceed);
+                self.renderMap();
 
                 // on fait une petite pause avant de continuer...
                 // histoire de laisser le temps au joueur de lire les message affiché
@@ -244,6 +246,7 @@
 
         },
         renderMap: function () {
+            console.log('test');
             this.players[0].renderTries(this.grid);
         },
         renderMiniMap: function () {

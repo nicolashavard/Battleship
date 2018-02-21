@@ -163,9 +163,9 @@
             var ship = this.players[0].fleet[this.players[0].activeShip];
 
             // si on a cliqué sur une cellule (délégation d'événement)
-            if (e.target.classList.contains('cell') && ship.dom.parentNode) {
+            if (e.target.classList.contains('cell')) {
                 // si on est dans la phase de placement des bateau
-                if (this.getPhase() === this.PHASE_INIT_PLAYER) {
+                if (this.getPhase() === this.PHASE_INIT_PLAYER && ship.dom.parentNode) {
                     // on enregistre la position du bateau, si cela se passe bien (la fonction renvoie true) on continue
                     if (this.players[0].setActiveShipPosition(utils.eq(e.target), utils.eq(e.target.parentNode))) {
                         // et on passe au bateau suivant (si il n'y en plus la fonction retournera false)

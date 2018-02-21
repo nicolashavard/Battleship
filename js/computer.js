@@ -16,6 +16,7 @@
             var self = this;
             var x = utils.randomInt(0, 9);
             var y = utils.randomInt(0, 9);
+            // utils.sound['fire'].play();
             setTimeout(function () {
                 self.game.fire(this, x, y, function (hasSucced) {
                     console.log("enemy hit on : Y = "+y+" X = "+x);

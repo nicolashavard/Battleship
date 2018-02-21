@@ -51,6 +51,10 @@
 
             infoBox.innerHTML = msg;
         },
+        sound: {'fire' : new Audio('sounds/fire.mp3'),
+                'hit' : new Audio('sounds/hit.mp3'),
+                'miss' : new Audio('sounds/miss.mp3')
+        },
         // permet de demander une confirmation à l'utilisateur
         // les 2 derniers paramètres sont des callback a exécuter en cas de confirmation pour le deuxième, ou d'infirmation pour le dernier
         confirm: function (message, confirm, cancel) {

@@ -37,6 +37,7 @@
             this.miniGrid = document.querySelector('.mini-grid');
 
             // défini l'ordre des phase de jeu
+
             this.phaseOrder = [
                 this.PHASE_INIT_PLAYER,
                 this.PHASE_INIT_OPPONENT,
@@ -180,10 +181,24 @@
                                 // console.log(self.players[0].grid);
                                 var first = document.querySelector('input[name=start]:checked').value;
                                 if(first === 'computer') {
-                                    self.currentPhase = self.phaseOrder[2];
+                                    self.phaseOrder = [
+                                        self.PHASE_INIT_PLAYER,
+                                        self.PHASE_INIT_OPPONENT,
+                                        self.PHASE_PLAY_OPPONENT,
+                                        self.PHASE_PLAY_PLAYER,
+                                        self.PHASE_GAME_OVER
+                                    ];
                                 }
                                 else if(first === 'random') {
-                                    self.currentPhase = self.phaseOrder[utils.randomInt(1, 2)];
+                                    if(utils.randomInt(1, 2) === 2) {
+                                        self.phaseOrder = [
+                                            self.PHASE_INIT_PLAYER,
+                                            self.PHASE_INIT_OPPONENT,
+                                            self.PHASE_PLAY_OPPONENT,
+                                            self.PHASE_PLAY_PLAYER,
+                                            self.PHASE_GAME_OVER
+                                        ];
+                                    }
                                 }
                                 document.querySelector('#radios').style.display = 'none';
                                 self.goNextPhase();
@@ -235,42 +250,49 @@
 
             // on demande à l'attaqué si il a un bateaux à la position visée
             // le résultat devra être passé en paramètre à la fonction de callback (3e paramètre)
-            target.receiveAttack(col, line, function (hasSucceed) {
+            utils.sound['fire'].play();
+            setTimeout(function() {
+                target.receiveAttack(col, line, function (hasSucceed) {
+                    if (hasSucceed === 'alreadyHit') {
+                        msg += "Déja touché...";
+                        utils.sound['miss'].play();
+                    }
+                    else if (hasSucceed === 'alreadyMiss') {
+                        msg += "Déja raté...";
+                        utils.sound['miss'].play();
+                    }
+                    else if (hasSucceed === 'sunk') {
+                        msg += "Touché coulé !";
+                        utils.sound['hit'].play();
+                    }
+                    else if (hasSucceed) {
+                        msg += "Touché !";
+                        utils.sound['hit'].play();
+                    }
+                    else {
+                        msg += "Manqué...";
+                        utils.sound['miss'].play();
+                    }
+                    utils.info(msg);
 
-                if (hasSucceed === 'alreadyHit') {
-                    msg += "Déja touché...";
-                }
-                else if (hasSucceed === 'alreadyMiss') {
-                    msg += "Déja raté...";
-                }
-                else if (hasSucceed === 'sunk') {
-                    msg += "Touché coulé !";
-                }
-                else if (hasSucceed) {
-                    msg += "Touché !";
-                }
-                else {
-                    msg += "Manqué...";
-                }
-                utils.info(msg);
+                    // on invoque la fonction callback (4e paramètre passé à la méthode fire)
+                    // pour transmettre à l'attaquant le résultat de l'attaque
+                    callback(hasSucceed);
+                    self.renderMap();
+                    if (self.currentPhase === self.PHASE_PLAY_OPPONENT) {
+                        self.players[0].renderShips(self.miniGrid, self.players[1].tries);
+                        console.log(self.players[0].fleet);
+                        console.log(self.players[1].fleet);
+                    }
 
-                // on invoque la fonction callback (4e paramètre passé à la méthode fire)
-                // pour transmettre à l'attaquant le résultat de l'attaque
-                callback(hasSucceed);
-                self.renderMap();
-                if(self.currentPhase === self.PHASE_PLAY_OPPONENT) {
-                    self.players[0].renderShips(self.miniGrid, self.players[1].tries);
-                    console.log(self.players[0].fleet);
-                    console.log(self.players[1].fleet);
-                }
-
-                // on fait une petite pause avant de continuer...
-                // histoire de laisser le temps au joueur de lire les message affiché
-                setTimeout(function () {
-                    self.stopWaiting();
-                    self.goNextPhase();
-                }, 1000);
-            });
+                    // on fait une petite pause avant de continuer...
+                    // histoire de laisser le temps au joueur de lire les message affiché
+                    setTimeout(function () {
+                        self.stopWaiting();
+                        self.goNextPhase();
+                    }, 1000);
+                });
+            }, 1000);
 
         },
         renderMap: function () {

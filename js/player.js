@@ -27,9 +27,12 @@
             this.tries = utils.createGrid(10, 10);
         },
         play: function (col, line) {
+            var self = this;
+            // utils.sound['fire'].play();
             // appel la fonction fire du game, et lui passe une calback pour récupérer le résultat du tir
-            this.game.fire(this, col, line, _.bind(function (hasSucced) {
-                this.tries[line][col] = hasSucced;
+            self.game.fire(this, col, line, _.bind(function (hasSucced) {
+
+                self.tries[line][col] = hasSucced;
             }, this));
         },
         // quand il est attaqué le joueur doit dire si il a un bateaux ou non à l'emplacement choisi par l'adversaire

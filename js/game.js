@@ -232,6 +232,9 @@
                 else if (hasSucceed === 'alreadyMiss') {
                     msg += "Déja raté...";
                 }
+                else if (hasSucceed === 'sunk') {
+                    msg += "Touché coulé !";
+                }
                 else if (hasSucceed) {
                     msg += "Touché !";
                 }
@@ -244,6 +247,11 @@
                 // pour transmettre à l'attaquant le résultat de l'attaque
                 callback(hasSucceed);
                 self.renderMap();
+                if(self.currentPhase === self.PHASE_PLAY_OPPONENT) {
+                    self.players[0].renderShips(self.miniGrid, self.players[1].tries);
+                    console.log(self.players[0].fleet);
+                    console.log(self.players[1].fleet);
+                }
 
                 // on fait une petite pause avant de continuer...
                 // histoire de laisser le temps au joueur de lire les message affiché

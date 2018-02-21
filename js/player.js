@@ -35,15 +35,29 @@
         // quand il est attaqué le joueur doit dire si il a un bateaux ou non à l'emplacement choisi par l'adversaire
         receiveAttack: function (col, line, callback) {
             var succeed = false;
-            if (this.grid[line][col] === 'x') {
+            var cell = this.grid[line][col];
+            if (cell === 'x') {
                 succeed = "alreadyHit";
             }
-            else if (this.grid[line][col] === '.') {
+            else if (cell === '.') {
                 succeed = "alreadyMiss";
             }
-            else if (this.grid[line][col] !== 0) {
+            else if (cell !== 0) {
                 succeed = true;
+                console.log("cell : "+cell);
+                if(cell > this.fleet.length) {
+                    cell -= this.fleet.length;
+                }
+                console.log("cell -- : "+cell);
+                this.fleet[cell-1].life--;
                 this.grid[line][col] = 'x';
+                if(this.fleet[cell-1].life === 0) {
+                    succeed = 'sunk';
+                    if(this.game.players[0].fleet[cell-1].life === 0) {
+                        var sunkShip = document.querySelector('.' + this.fleet[cell - 1].getName());
+                        sunkShip.className += " sunk";
+                    }
+                }
             }
             else {
                 this.grid[line][col] = '.';
@@ -107,9 +121,10 @@
         renderTries: function (grid) {
             this.tries.forEach(function (row, rid) {
                 row.forEach(function (val, col) {
+
                     var node = grid.querySelector('.row:nth-child(' + (rid + 1) + ') .cell:nth-child(' + (col + 1) + ')');
 
-                    if (val === true) {
+                    if (val === true || val === 'sunk') {
                         node.style.backgroundColor = '#e60019';
                     } else if (val === false) {
                         node.style.backgroundColor = '#aeaeae';
@@ -117,7 +132,19 @@
                 });
             });
         },
-        renderShips: function (grid) {
+        renderShips: function (grid, tries) {
+            tries.forEach(function (row, rid) {
+                row.forEach(function (val, col) {
+                    var node = grid.querySelector('.row:nth-child(' + (col + 1) + ') .cell:nth-child(' + (rid + 1) + ')');
+
+                    if (val === true || val === 'sunk') {
+                        node.style.backgroundColor = '#e60019';
+                    }
+                    // else if (val === false) {
+                    //     node.style.backgroundColor = '#aeaeae';
+                    // }
+                });
+            });
         },
         renderMiniMap: function (game) {
             var fleet = game.players[0].fleet;

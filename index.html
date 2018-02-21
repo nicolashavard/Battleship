@@ -14,7 +14,6 @@
 
         <div class="main-container">
             <h1>My Battleship</h1>
-
             <div class="left column">
                 
                 <div class="game-info"></div>
@@ -281,6 +280,22 @@
                     <span class="btn confirm-ok">OK</span>
                 </div>
             </div>
+            <form id="radios">
+                <p>Veuillez choisir qui commence.</p>
+                <div>
+                    <input type="radio" id="contactChoice1"
+                           name="start" value="player" checked>
+                    <label for="contactChoice1">Vous</label>
+
+                    <input type="radio" id="contactChoice2"
+                           name="start" value="computer">
+                    <label for="contactChoice2">Adversaire</label>
+
+                    <input type="radio" id="contactChoice3"
+                           name="start" value="random">
+                    <label for="contactChoice3">Aléatoire</label>
+                </div>
+            </form>
         </div>
 
         <script src="js/vendor/lodash.js"></script>

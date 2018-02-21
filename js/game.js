@@ -81,6 +81,7 @@
                 // detection de la fin de partie
                 if (!this.gameIsOver()) {
                     this.currentPhase = this.phaseOrder[2];
+                    utils.info("A vous de jouer, choisissez une case !");
                     // le jeu n'est pas terminé on recommence un tour de jeu
                 }
                 else {
@@ -177,8 +178,15 @@
                                 self.renderMiniMap();
                                 self.players[0].clearPreview();
                                 // console.log(self.players[0].grid);
+                                var first = document.querySelector('input[name=start]:checked').value;
+                                if(first === 'computer') {
+                                    self.currentPhase = self.phaseOrder[2];
+                                }
+                                else if(first === 'random') {
+                                    self.currentPhase = self.phaseOrder[utils.randomInt(1, 2)];
+                                }
+                                document.querySelector('#radios').style.display = 'none';
                                 self.goNextPhase();
-
                             }, function () {
                                 self.stopWaiting();
                                 // sinon, on efface les bateaux (les positions enregistrées), et on recommence

@@ -86,17 +86,17 @@
 
     refType[shipFactory.TYPE_BATTLESHIP] = {
         life: 5,
-        name: "Battleship",
+        name: "battleship",
         color: "#e60019"
     };
     refType[shipFactory.TYPE_DESTROYER] = {
         life: 5,
-        name: "Destroyer",
+        name: "destroyer",
         color: "#577cc2"
     };
     refType[shipFactory.TYPE_SUBMARINE] = {
         life: 4,
-        name: "Submarine",
+        name: "submarine",
         color: "#56988c"
     };
     refType[shipFactory.TYPE_SMALL_SHIP] = {

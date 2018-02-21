@@ -57,6 +57,10 @@
                         var sunkShip = document.querySelector('.' + this.fleet[cell - 1].getName());
                         sunkShip.className += " sunk";
                     }
+                    if(this.checkGameOver() === true) {
+                        console.log("game Over : true");
+                        this.game.win = true;
+                    }
                 }
             }
             else {
@@ -64,19 +68,39 @@
             }
             callback.call(undefined, succeed);
         },
+        checkGameOver: function () {
+            var shipsAlives = this.fleet.length;
+            this.fleet.forEach( function (ship) {
+                console.log("ship id : "+ship.getId()+" hp : "+ship.getLife());
+                if(ship.getLife() <= 0) {
+                    shipsAlives--;
+                }
+                console.log("vrai");
+            });
+            if(shipsAlives === 0)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
         setActiveShipPosition: function (x, y) {
             var ship = this.fleet[this.activeShip];
             var i = 0;
             var j = 0;
+            var math = Math.floor(ship.getLife() / 2);
+
+
             if(ship.getDirection() === "horizontal") {
                 while (j < ship.getLife()) {
-                    if (this.grid[y][x - Math.floor(ship.getLife() / 2) + j] !== 0) {
+                    if (this.grid[y][x - math + j] !== 0) {
                         return false;
                     }
                     j++;
                 }
                 while (i < ship.getLife()) {
-                    this.grid[y][x - Math.floor(ship.getLife() / 2) + i] = ship.getId();
+                    this.grid[y][x - math + i] = ship.getId();
                     i += 1;
                 }
                 console.debug(ship);
@@ -84,13 +108,15 @@
             }
             else {
                 while (j < ship.getLife()) {
-                    if (this.grid[y - Math.floor(ship.getLife() / 2) + j][x] !== 0) {
+                    if(typeof (this.grid[y - math + j]) === 'undefined')
+                        return false;
+                    if (this.grid[y - math + j][x] !== 0) {
                         return false;
                     }
                     j++;
                 }
                 while (i < ship.getLife()) {
-                    this.grid[y - Math.floor(ship.getLife() / 2) + i][x] = ship.getId();
+                    this.grid[y - math + i][x] = ship.getId();
                     i += 1;
                 }
                 console.debug(ship);

@@ -27,6 +27,8 @@
         // liste des joueurs
         players: [],
 
+        // fin de jeu
+        win: false,
         // lancement du jeu
         init: function () {
 
@@ -49,7 +51,7 @@
 
             // ajoute les écouteur d'événement sur la grille
             this.addListeners();
-
+            console.log('debut, currentPhase : '+this.currentPhase);
             // c'est parti !
             this.goNextPhase();
         },
@@ -68,21 +70,21 @@
             // récupération du numéro d'index de la phase courante
             var ci = this.phaseOrder.indexOf(this.currentPhase);
             var self = this;
-
-            if (ci !== this.phaseOrder.length - 1) {
-                this.currentPhase = this.phaseOrder[ci + 1];
-            } else {
-                this.currentPhase = this.phaseOrder[0];
+            if(this.win === true) {
+                this.currentPhase = this.phaseOrder[4];
             }
-
+            else if (ci !== this.phaseOrder.length - 1) {
+                this.currentPhase = this.phaseOrder[ci + 1];
+            }
             switch (this.currentPhase) {
             case this.PHASE_GAME_OVER:
                 // detection de la fin de partie
                 if (!this.gameIsOver()) {
-                    // le jeu n'est pas terminé on recommence un tour de jeu
                     this.currentPhase = this.phaseOrder[2];
-                    utils.info("A vous de jouer, choisissez une case !");
-                    break;
+                    // le jeu n'est pas terminé on recommence un tour de jeu
+                }
+                else {
+                    utils.info("Game Over");
                 }
                 break;
             case this.PHASE_INIT_PLAYER:
@@ -107,7 +109,7 @@
 
         },
         gameIsOver: function () {
-            return false;
+            return game.win;
         },
         getPhase: function () {
             if (this.waiting) {
@@ -158,9 +160,10 @@
         handleClick: function (e) {
             // self garde une référence vers "this" en cas de changement de scope
             var self = this;
+            var ship = this.players[0].fleet[this.players[0].activeShip];
 
             // si on a cliqué sur une cellule (délégation d'événement)
-            if (e.target.classList.contains('cell')) {
+            if (e.target.classList.contains('cell') && ship.dom.parentNode) {
                 // si on est dans la phase de placement des bateau
                 if (this.getPhase() === this.PHASE_INIT_PLAYER) {
                     // on enregistre la position du bateau, si cela se passe bien (la fonction renvoie true) on continue

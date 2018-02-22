@@ -39,6 +39,32 @@
         receiveAttack: function (col, line, callback) {
             var succeed = false;
             var cell = this.grid[line][col];
+            // console.log(this.grid);
+            // console.log("line : "+line);
+            // console.log("col : "+col);
+            // console.log("cell : "+cell);
+            if (cell === 'x' || cell === '.' || cell === 0) {
+                if(this.game.currentPhase === "PHASE_PLAY_PLAYER") {
+                    animationMiss.style.display = 'block';
+                    animationMiss.play();
+                    animationMiss.style.top = 1 + (60*line) + 'px';
+                    animationMiss.style.left = 1 + (60*col) + 'px';
+                    setTimeout(function(){
+                        animationMiss.style.display = 'none';
+                    }, 1500);
+                }
+            }
+            else {
+                if(this.game.currentPhase === "PHASE_PLAY_PLAYER") {
+                    animationHit.style.display = 'block';
+                    animationHit.play();
+                    animationHit.style.top = 1 + (60*line) + 'px';
+                    animationHit.style.left = 1 + (60*col) + 'px';
+                    setTimeout(function(){
+                        animationHit.style.display = 'none';
+                    }, 1200);
+                }
+            }
             if (cell === 'x') {
                 succeed = "alreadyHit";
             }
@@ -47,11 +73,11 @@
             }
             else if (cell !== 0) {
                 succeed = true;
-                console.log("cell : "+cell);
+                // console.log("cell : "+cell);
                 if(cell > this.fleet.length) {
                     cell -= this.fleet.length;
                 }
-                console.log("cell -- : "+cell);
+                // console.log("cell -- : "+cell);
                 this.fleet[cell-1].life--;
                 this.grid[line][col] = 'x';
                 if(this.fleet[cell-1].life === 0) {
@@ -61,7 +87,7 @@
                         sunkShip.className += " sunk";
                     }
                     if(this.checkGameOver() === true) {
-                        console.log("game Over : true");
+                        // console.log("game Over : true");
                         this.game.win = true;
                     }
                 }
@@ -74,11 +100,11 @@
         checkGameOver: function () {
             var shipsAlives = this.fleet.length;
             this.fleet.forEach( function (ship) {
-                console.log("ship id : "+ship.getId()+" hp : "+ship.getLife());
+                // console.log("ship id : "+ship.getId()+" hp : "+ship.getLife());
                 if(ship.getLife() <= 0) {
                     shipsAlives--;
                 }
-                console.log("vrai");
+                // console.log("vrai");
             });
             if(shipsAlives === 0)
             {
@@ -106,7 +132,7 @@
                     this.grid[y][x - math + i] = ship.getId();
                     i += 1;
                 }
-                console.debug(ship);
+                // console.debug(ship);
                 return true;
             }
             else {
@@ -122,7 +148,7 @@
                     this.grid[y - math + i][x] = ship.getId();
                     i += 1;
                 }
-                console.debug(ship);
+                // console.debug(ship);
                 return true;
             }
         },
@@ -152,10 +178,11 @@
                 row.forEach(function (val, col) {
 
                     var node = grid.querySelector('.row:nth-child(' + (rid + 1) + ') .cell:nth-child(' + (col + 1) + ')');
-
+                    // console.log("val : "+val);
                     if (val === true || val === 'sunk') {
                         node.style.backgroundColor = '#e60019';
-                    } else if (val === false) {
+                    }
+                    else if (val === false) {
                         node.style.backgroundColor = '#aeaeae';
                     }
                 });

@@ -16,10 +16,9 @@
             var self = this;
             var x = utils.randomInt(0, 9);
             var y = utils.randomInt(0, 9);
-            // utils.sound['fire'].play();
             setTimeout(function () {
                 self.game.fire(this, x, y, function (hasSucced) {
-                    console.log("enemy hit on : Y = "+y+" X = "+x);
+                    // console.log("enemy hit on : Y = "+y+" X = "+x);
                     self.tries[x][y] = hasSucced;
                 });
             }, 2000);
@@ -42,7 +41,7 @@
                         y = 10 - hp;
                         coordX = utils.randomInt(0, x);
                         coordY = utils.randomInt(0, y);
-                        console.log("Vertical ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+coordX);
+                        // console.log("Vertical ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+coordX);
                         if(self.grid[coordY][coordX] === 0)
                         {
                             hp--;
@@ -51,7 +50,7 @@
                             {
                                 if(self.grid[ligne+1][coordX] !== 0)
                                 {
-                                    console.log("         /!\\ ship "+ship.getId()+" coordsY : "+ (ligne+1) +" coordX : "+coordX);
+                                    // console.log("         /!\\ ship "+ship.getId()+" coordsY : "+ (ligne+1) +" coordX : "+coordX);
                                     break;
                                 }
                                 hp--;
@@ -69,7 +68,7 @@
                             }
                         }
                         else {
-                            console.log("         /!\\ ship "+ship.getId()+" coordsY : "+ coordY +" coordX : "+coordX);
+                            // console.log("         /!\\ ship "+ship.getId()+" coordsY : "+ coordY +" coordX : "+coordX);
                         }
                     }
                     else // horizontal
@@ -77,7 +76,7 @@
                         x = 10 - hp;
                         coordX = utils.randomInt(0, x);
                         coordY = utils.randomInt(0, y);
-                        console.log("Horizontal ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+coordX);
+                        // console.log("Horizontal ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+coordX);
                         if(self.grid[coordY][coordX] === 0)
                         {
                             hp--;
@@ -86,7 +85,7 @@
                             {
                                 if(self.grid[coordY][col+1] !== 0)
                                 {
-                                    console.log("           /!\\ ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+ (col+1));
+                                    // console.log("           /!\\ ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+ (col+1));
                                     break;
                                 }
                                 hp--;
@@ -104,7 +103,7 @@
                             }
                         }
                         else {
-                            console.log("           /!\\ ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+ coordX);
+                            // console.log("           /!\\ ship "+ship.getId()+" coordsY : "+ coordY+" coordX : "+ coordX);
                         }
                     }
                 }

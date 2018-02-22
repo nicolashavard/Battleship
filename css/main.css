@@ -133,3 +133,9 @@
     opacity: 0.1;
 }
 
+#animationHit, #animationMiss{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    display: none;
+}

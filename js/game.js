@@ -52,7 +52,6 @@
 
             // ajoute les écouteur d'événement sur la grille
             this.addListeners();
-            console.log('debut, currentPhase : '+this.currentPhase);
             // c'est parti !
             this.goNextPhase();
         },
@@ -238,6 +237,8 @@
             this.wait();
             var self = this;
             var msg = "";
+            var animationHit = document.querySelector('#animationHit');
+            var animationMiss = document.querySelector('#animationMiss');
 
             // determine qui est l'attaquant et qui est attaqué
             var target = this.players.indexOf(from) === 0
@@ -256,22 +257,27 @@
                     if (hasSucceed === 'alreadyHit') {
                         msg += "Déja touché...";
                         utils.sound['miss'].play();
+                        // animationMiss.play();
                     }
                     else if (hasSucceed === 'alreadyMiss') {
                         msg += "Déja raté...";
                         utils.sound['miss'].play();
+                        // animationMiss.play();
                     }
                     else if (hasSucceed === 'sunk') {
                         msg += "Touché coulé !";
                         utils.sound['hit'].play();
+                        // animationHit.play();
                     }
                     else if (hasSucceed) {
                         msg += "Touché !";
                         utils.sound['hit'].play();
+                        // animationHit.play();
                     }
                     else {
                         msg += "Manqué...";
                         utils.sound['miss'].play();
+                        // animationMiss.play();
                     }
                     utils.info(msg);
 
@@ -281,8 +287,8 @@
                     self.renderMap();
                     if (self.currentPhase === self.PHASE_PLAY_OPPONENT) {
                         self.players[0].renderShips(self.miniGrid, self.players[1].tries);
-                        console.log(self.players[0].fleet);
-                        console.log(self.players[1].fleet);
+                        // console.log(self.players[0].fleet);
+                        // console.log(self.players[1].fleet);
                     }
 
                     // on fait une petite pause avant de continuer...
@@ -296,6 +302,7 @@
 
         },
         renderMap: function () {
+            // console.log(this.grid);
             this.players[0].renderTries(this.grid);
         },
         renderMiniMap: function () {

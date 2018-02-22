@@ -33,8 +33,8 @@
         init: function () {
 
             // initialisation
-            this.grid = document.querySelector('.board .main-grid');
-            this.miniGrid = document.querySelector('.mini-grid');
+            this.grid = document.querySelector(".board .main-grid");
+            this.miniGrid = document.querySelector(".mini-grid");
 
             // défini l'ordre des phase de jeu
 
@@ -59,8 +59,6 @@
             // donne aux objets player et computer une réference vers l'objet game
             player.setGame(this);
             computer.setGame(this);
-
-            // todo : implémenter le jeu en réseaux
             this.players = [player, computer];
 
             this.players[0].init();
@@ -70,21 +68,21 @@
             // récupération du numéro d'index de la phase courante
             var ci = this.phaseOrder.indexOf(this.currentPhase);
             var self = this;
-            if(this.win === true) {
+            if (this.win === true) {
                 this.currentPhase = this.phaseOrder[4];
-            }
-            else if (ci !== this.phaseOrder.length - 1) {
-                this.currentPhase = this.phaseOrder[ci + 1];
+            } else {
+                if (ci !== this.phaseOrder.length - 1) {
+                    this.currentPhase = this.phaseOrder[ci + 1];
+                }
             }
             switch (this.currentPhase) {
             case this.PHASE_GAME_OVER:
                 // detection de la fin de partie
                 if (!this.gameIsOver()) {
-                    this.currentPhase = this.phaseOrder[2];
-                    utils.info("A vous de jouer, choisissez une case !");
+                    this.currentPhase = this.phaseOrder[1];
+                    this.goNextPhase();
                     // le jeu n'est pas terminé on recommence un tour de jeu
-                }
-                else {
+                } else {
                     utils.info("Game Over");
                 }
                 break;
@@ -110,7 +108,7 @@
 
         },
         gameIsOver: function () {
-            return game.win;
+            return this.win;
         },
         getPhase: function () {
             if (this.waiting) {
@@ -128,23 +126,22 @@
         },
         addListeners: function () {
             // on ajoute des acouteur uniquement sur la grid (délégation d'événement)
-            this.grid.addEventListener('mousemove', _.bind(this.handleMouseMove, this));
-            this.grid.addEventListener('click', _.bind(this.handleClick, this));
-            this.grid.addEventListener('contextmenu', _.bind(this.handleRightClick, this));
+            this.grid.addEventListener("mousemove", _.bind(this.handleMouseMove, this));
+            this.grid.addEventListener("click", _.bind(this.handleClick, this));
+            this.grid.addEventListener("contextmenu", _.bind(this.handleRightClick, this));
         },
         displayPreview: function (ship, e) {
-            if(ship.getDirection() === "horizontal") {
-                ship.dom.style.top = "" + (utils.eq(e.target.parentNode)) * utils.CELL_SIZE + "px";
-                ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
-            }
-            else {
-                ship.dom.style.top = "" + (utils.eq(e.target.parentNode)) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
-                ship.dom.style.left = "" + utils.eq(e.target) * utils.CELL_SIZE + "px";
+            if (ship.getDirection() === "horizontal") {
+                ship.dom.style.top = (utils.eq(e.target.parentNode)) * utils.CELL_SIZE + "px";
+                ship.dom.style.left = utils.eq(e.target) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
+            } else {
+                ship.dom.style.top = (utils.eq(e.target.parentNode)) * utils.CELL_SIZE - Math.floor(ship.getLife() / 2) * utils.CELL_SIZE + "px";
+                ship.dom.style.left = utils.eq(e.target) * utils.CELL_SIZE + "px";
             }
         },
         handleMouseMove: function (e) {
             // on est dans la phase de placement des bateau
-            if (this.getPhase() === this.PHASE_INIT_PLAYER && e.target.classList.contains('cell')) {
+            if (this.getPhase() === this.PHASE_INIT_PLAYER && e.target.classList.contains("cell")) {
                 var ship = this.players[0].fleet[this.players[0].activeShip];
 
                 // si on a pas encore affiché (ajouté aux DOM) ce bateau
@@ -164,7 +161,7 @@
             var ship = this.players[0].fleet[this.players[0].activeShip];
 
             // si on a cliqué sur une cellule (délégation d'événement)
-            if (e.target.classList.contains('cell')) {
+            if (e.target.classList.contains("cell")) {
                 // si on est dans la phase de placement des bateau
                 if (this.getPhase() === this.PHASE_INIT_PLAYER && ship.dom.parentNode) {
                     // on enregistre la position du bateau, si cela se passe bien (la fonction renvoie true) on continue
@@ -178,8 +175,8 @@
                                 self.renderMiniMap();
                                 self.players[0].clearPreview();
                                 // console.log(self.players[0].grid);
-                                var first = document.querySelector('input[name=start]:checked').value;
-                                if(first === 'computer') {
+                                var first = document.querySelector("input[name=start]:checked").value;
+                                if (first === "computer") {
                                     self.phaseOrder = [
                                         self.PHASE_INIT_PLAYER,
                                         self.PHASE_INIT_OPPONENT,
@@ -187,19 +184,20 @@
                                         self.PHASE_PLAY_PLAYER,
                                         self.PHASE_GAME_OVER
                                     ];
-                                }
-                                else if(first === 'random') {
-                                    if(utils.randomInt(1, 2) === 2) {
-                                        self.phaseOrder = [
-                                            self.PHASE_INIT_PLAYER,
-                                            self.PHASE_INIT_OPPONENT,
-                                            self.PHASE_PLAY_OPPONENT,
-                                            self.PHASE_PLAY_PLAYER,
-                                            self.PHASE_GAME_OVER
-                                        ];
+                                } else {
+                                    if (first === "random") {
+                                        if (utils.randomInt(1, 2) === 2) {
+                                            self.phaseOrder = [
+                                                self.PHASE_INIT_PLAYER,
+                                                self.PHASE_INIT_OPPONENT,
+                                                self.PHASE_PLAY_OPPONENT,
+                                                self.PHASE_PLAY_PLAYER,
+                                                self.PHASE_GAME_OVER
+                                            ];
+                                        }
                                     }
                                 }
-                                document.querySelector('#radios').style.display = 'none';
+                                document.querySelector("#radios").style.display = "none";
                                 self.goNextPhase();
                             }, function () {
                                 self.stopWaiting();
@@ -209,24 +207,25 @@
                             });
                         }
                     }
-                // si on est dans la phase de jeu (du joueur humain)
-                } else if (this.getPhase() === this.PHASE_PLAY_PLAYER) {
-                    this.players[0].play(utils.eq(e.target), utils.eq(e.target.parentNode));
+                    // si on est dans la phase de jeu (du joueur humain)
+                } else {
+                    if (this.getPhase() === this.PHASE_PLAY_PLAYER) {
+                        this.players[0].play(utils.eq(e.target), utils.eq(e.target.parentNode));
+                    }
                 }
             }
         },
         handleRightClick: function (e) {
-            if(this.getPhase() === this.PHASE_INIT_PLAYER) {
+            if (this.getPhase() === this.PHASE_INIT_PLAYER) {
                 var ship = this.players[0].fleet[this.players[0].activeShip];
-                if(ship.getDirection() === "horizontal") {
+                if (ship.getDirection() === "horizontal") {
                     ship.setDirection("vertical");
-                    ship.dom.style.height = "" + utils.CELL_SIZE * ship.life + "px";
-                    ship.dom.style.width = "" + utils.CELL_SIZE + "px";
-                }
-                else {
+                    ship.dom.style.height = utils.CELL_SIZE * ship.life + "px";
+                    ship.dom.style.width = utils.CELL_SIZE + "px";
+                } else {
                     ship.setDirection("horizontal");
-                    ship.dom.style.height = "" + utils.CELL_SIZE + "px";
-                    ship.dom.style.width = "" + utils.CELL_SIZE * ship.life + "px";
+                    ship.dom.style.height = utils.CELL_SIZE + "px";
+                    ship.dom.style.width = utils.CELL_SIZE * ship.life + "px";
                 }
                 this.displayPreview(ship, e);
             }
@@ -237,8 +236,6 @@
             this.wait();
             var self = this;
             var msg = "";
-            var animationHit = document.querySelector('#animationHit');
-            var animationMiss = document.querySelector('#animationMiss');
 
             // determine qui est l'attaquant et qui est attaqué
             var target = this.players.indexOf(from) === 0
@@ -251,33 +248,30 @@
 
             // on demande à l'attaqué si il a un bateaux à la position visée
             // le résultat devra être passé en paramètre à la fonction de callback (3e paramètre)
-            utils.sound['fire'].play();
-            setTimeout(function() {
+            utils.sound.fire.play();
+            setTimeout(function () {
                 target.receiveAttack(col, line, function (hasSucceed) {
-                    if (hasSucceed === 'alreadyHit') {
+                    if (hasSucceed === "alreadyHit") {
                         msg += "Déja touché...";
-                        utils.sound['miss'].play();
-                        // animationMiss.play();
-                    }
-                    else if (hasSucceed === 'alreadyMiss') {
-                        msg += "Déja raté...";
-                        utils.sound['miss'].play();
-                        // animationMiss.play();
-                    }
-                    else if (hasSucceed === 'sunk') {
-                        msg += "Touché coulé !";
-                        utils.sound['hit'].play();
-                        // animationHit.play();
-                    }
-                    else if (hasSucceed) {
-                        msg += "Touché !";
-                        utils.sound['hit'].play();
-                        // animationHit.play();
-                    }
-                    else {
-                        msg += "Manqué...";
-                        utils.sound['miss'].play();
-                        // animationMiss.play();
+                        utils.sound.miss.play();
+                    } else {
+                        if (hasSucceed === "alreadyMiss") {
+                            msg += "Déja raté...";
+                            utils.sound.miss.play();
+                        } else {
+                            if (hasSucceed === "sunk") {
+                                msg += "Touché coulé !";
+                                utils.sound.hit.play();
+                            } else {
+                                if (hasSucceed) {
+                                    msg += "Touché !";
+                                    utils.sound.hit.play();
+                                } else {
+                                    msg += "Manqué...";
+                                    utils.sound.miss.play();
+                                }
+                            }
+                        }
                     }
                     utils.info(msg);
 
@@ -310,8 +304,8 @@
         }
     };
     // point d'entrée
-    document.addEventListener('DOMContentLoaded', function () {
-        document.addEventListener('contextmenu', function(event) {
+    document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("contextmenu", function (event) {
             event.preventDefault();
         }, true);
         game.init();

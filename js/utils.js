@@ -1,5 +1,5 @@
 /*jslint browser this */
-/*global _ */
+/*global _ , Audio */
 
 (function (global) {
     "use strict";
@@ -47,26 +47,27 @@
         },
         // permet de faire afficher un message dans une "boite" spécifique (le noeud qui a la classe game-info)
         info: function (msg) {
-            var infoBox = document.querySelector('.game-info');
+            var infoBox = document.querySelector(".game-info");
 
             infoBox.innerHTML = msg;
         },
-        sound: {'fire' : new Audio('effects/fire.mp3'),
-                'hit' : new Audio('effects/hit.mp3'),
-                'miss' : new Audio('effects/miss.mp3')
+        sound: {
+            "fire": new Audio("effects/fire.mp3"),
+            "hit": new Audio("effects/hit.mp3"),
+            "miss": new Audio("effects/miss.mp3")
         },
         // permet de demander une confirmation à l'utilisateur
         // les 2 derniers paramètres sont des callback a exécuter en cas de confirmation pour le deuxième, ou d'infirmation pour le dernier
         confirm: function (message, confirm, cancel) {
             var clickCallback;
-            var confirmBox = document.querySelector('#confirm');
-            var btnContainer = confirmBox.querySelector('.btn-container');
-            var msgContainer = confirmBox.querySelector('.message-container');
+            var confirmBox = document.querySelector("#confirm");
+            var btnContainer = confirmBox.querySelector(".btn-container");
+            var msgContainer = confirmBox.querySelector(".message-container");
             clickCallback = function (e) {
-                if (e.target.classList.contains('btn')) {
-                    this.removeEventListener('click', clickCallback);
+                if (e.target.classList.contains("btn")) {
+                    this.removeEventListener("click", clickCallback);
                     confirmBox.style.display = "none";
-                    if (e.target.classList.contains('confirm-ok')) {
+                    if (e.target.classList.contains("confirm-ok")) {
                         if (confirm) {
                             confirm.call();
                         }
@@ -78,9 +79,9 @@
                 }
             };
 
-            btnContainer.addEventListener('click', clickCallback);
+            btnContainer.addEventListener("click", clickCallback);
 
-            confirmBox.style.display = 'block';
+            confirmBox.style.display = "block";
 
             msgContainer.innerHTML = message;
         }

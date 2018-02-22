@@ -9,6 +9,7 @@
     var shipFactory;
 
     var shipAI = 0;
+
     function getShipNewIndex() {
         shipAI = shipAI + 1;
         return shipAI;
@@ -45,14 +46,14 @@
         setDirection: function (dir) {
             this.direction = dir;
         },
-        getDirection: function() {
+        getDirection: function () {
             return this.direction;
         },
         init: function () {
             this.id = getShipNewIndex();
-            this.dom = document.createElement('div');
-            this.dom.style.height = "" + utils.CELL_SIZE + "px";
-            this.dom.style.width = "" + utils.CELL_SIZE * this.life + "px";
+            this.dom = document.createElement("div");
+            this.dom.style.height = utils.CELL_SIZE + "px";
+            this.dom.style.width = utils.CELL_SIZE * this.life + "px";
             this.dom.style.position = "absolute";
             this.dom.style.opacity = "0.8";
             this.dom.style.backgroundColor = this.color;
@@ -61,10 +62,10 @@
     };
 
     shipFactory = {
-        TYPE_BATTLESHIP: 'battleship',
-        TYPE_DESTROYER: 'destroyer',
-        TYPE_SUBMARINE: 'submarine',
-        TYPE_SMALL_SHIP: 'small-ship',
+        TYPE_BATTLESHIP: "battleship",
+        TYPE_DESTROYER: "destroyer",
+        TYPE_SUBMARINE: "submarine",
+        TYPE_SMALL_SHIP: "small-ship",
 
         build: function (type, name) {
 

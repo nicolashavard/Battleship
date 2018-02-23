@@ -184,13 +184,13 @@
         renderShips: function (grid, tries) {
             tries.forEach(function (row, rid) {
                 row.forEach(function (val, col) {
-                    var node = grid.querySelector(".row:nth-child(" + (col + 1) + ") .cell:nth-child(" + (rid + 1) + ")");
+                    var node = grid.querySelector(".row:nth-child(" + (rid + 1) + ") .cell:nth-child(" + (col + 1) + ")");
                     if (val === true || val === "sunk") {
                         node.style.backgroundColor = "#e60019";
                     }
-                    // else if (val === false) {
-                    //     node.style.backgroundColor = '#aeaeae';
-                    // }
+                    else if (val === false) {
+                        node.style.backgroundColor = "#aeaeae";
+                    }
                 });
             });
         },

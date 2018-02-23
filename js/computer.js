@@ -14,14 +14,32 @@
         },
         play: function () {
             var self = this;
-            var x = utils.randomInt(0, 9);
-            var y = utils.randomInt(0, 9);
-            setTimeout(function () {
-                self.game.fire(this, x, y, function (hasSucced) {
-                    // console.log("enemy hit on : Y = " + y + " X = " + x);
-                    self.tries[x][y] = hasSucced;
-                });
-            }, 2000);
+            var x;
+            var y;
+            console.log(self.game.IALevel);
+            if (self.game.IALevel === "hard") {
+                ///////////////////////////////////////////////
+                x = utils.randomInt(0, 9);
+                y = utils.randomInt(0, 9);
+                setTimeout(function () {
+                    self.game.fire(this, x, y, function (hasSucced) {
+                        console.log("enemy hit on : Y = " + y + " X = " + x);
+                        self.tries[y][x] = hasSucced;
+                        console.log(self.tries);
+                    });
+                }, 2000);
+                ///////////////////////////////////////////////
+
+            } else {
+                x = utils.randomInt(0, 9);
+                y = utils.randomInt(0, 9);
+                setTimeout(function () {
+                    self.game.fire(this, x, y, function (hasSucced) {
+                        // console.log("enemy hit on : Y = " + y + " X = " + x);
+                        self.tries[y][x] = hasSucced;
+                    });
+                }, 2000);
+            }
         },
         areShipsOk: function (callback) {
             var self = this;
@@ -55,7 +73,6 @@
                                 hp -= 1;
                                 ligne += 1;
                             }
-
                             if (hp === 0) {
                                 //Bateau ok, on pose
                                 i = ship.getLife();

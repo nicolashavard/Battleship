@@ -27,6 +27,8 @@
         // liste des joueurs
         players: [],
 
+        //difficulte du jeu
+        IALevel: "easy",
         // fin de jeu
         win: false,
         // lancement du jeu
@@ -176,6 +178,10 @@
                                 self.players[0].clearPreview();
                                 // console.log(self.players[0].grid);
                                 var first = document.querySelector("input[name=start]:checked").value;
+                                var level = document.querySelector("input[name=level]:checked").value;
+                                if (level === "hard") {
+                                    self.IALevel = "hard";
+                                }
                                 if (first === "computer") {
                                     self.phaseOrder = [
                                         self.PHASE_INIT_PLAYER,
@@ -198,6 +204,7 @@
                                     }
                                 }
                                 document.querySelector("#radios").style.display = "none";
+                                document.querySelector("#levels").style.display = "none";
                                 self.goNextPhase();
                             }, function () {
                                 self.stopWaiting();

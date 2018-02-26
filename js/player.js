@@ -133,6 +133,7 @@
             } else {
                 while (j < ship.getLife()) {
                     if (this.grid[y - math + j] === "undefined") {
+                    if (this.grid[y - math + j] === undefined) {
                         return false;
                     }
                     if (this.grid[y - math + j][x] !== 0) {

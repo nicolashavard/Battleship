@@ -186,9 +186,8 @@
                 row.forEach(function (val, col) {
                     var node = grid.querySelector(".row:nth-child(" + (rid + 1) + ") .cell:nth-child(" + (col + 1) + ")");
                     if (val === true || val === "sunk") {
-                        node.style.backgroundColor = "#e60019";
-                    }
-                    else if (val === false) {
+                        node.style.backgroundColor = "#800080";
+                    } else if (val === false) {
                         node.style.backgroundColor = "#aeaeae";
                     }
                 });

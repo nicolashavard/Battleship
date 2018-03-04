@@ -12,25 +12,57 @@
         setGame: function (game) {
             this.game = game;
         },
+        findEmpty: function () {
+            var self = this;
+            var i = 0;
+            var empty = [];
+            var coord = {};
+            self.tries.forEach(function (test, line) {
+                test.forEach(function (test2, col) {
+                    if (test2 === 0) {
+                        coord = {
+                            "y": line,
+                            "x": col
+                        };
+                        empty[i] = coord;
+                        i += 1;
+                    }
+                });
+            });
+            // console.log(empty);
+            return empty;
+        },
         play: function () {
             var self = this;
-            var x;
-            var y;
-            console.log(self.game.IALevel);
+            var empty = self.findEmpty();
+            var emptyLength = empty.length;
+            // console.log("emptylength : " + emptyLength);
+            var index = utils.randomInt(0, emptyLength);
+            var coords = empty[index];
+            // console.log(self.game.IALevel);
+
             if (self.game.IALevel === "hard") {
                 ///////////////////////////////////////////////
-                x = utils.randomInt(0, 9);
-                y = utils.randomInt(0, 9);
                 setTimeout(function () {
-                    self.game.fire(this, x, y, function (hasSucced) {
-                        console.log("enemy hit on : Y = " + y + " X = " + x);
-                        self.tries[y][x] = hasSucced;
-                        console.log(self.tries);
+                    self.game.fire(this, coords.x, coords.y, function (hasSucced) {
+                        // console.log("enemy hit on : Y = " + coords.y + " X = " + coords.x);
+                        self.tries[coords.y][coords.x] = hasSucced;
+                    });
+                }, 2000);
+                ///////////////////////////////////////////////
+            } else if (self.game.IALevel === "medium") {
+                ///////////////////////////////////////////////
+                setTimeout(function () {
+                    self.game.fire(this, coords.x, coords.y, function (hasSucced) {
+                        // console.log("enemy hit on : Y = " + coords.y + " X = " + coords.x);
+                        self.tries[coords.y][coords.x] = hasSucced;
                     });
                 }, 2000);
                 ///////////////////////////////////////////////
 
             } else {
+                var x;
+                var y;
                 x = utils.randomInt(0, 9);
                 y = utils.randomInt(0, 9);
                 setTimeout(function () {

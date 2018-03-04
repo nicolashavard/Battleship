@@ -181,6 +181,8 @@
                                 var level = document.querySelector("input[name=level]:checked").value;
                                 if (level === "hard") {
                                     self.IALevel = "hard";
+                                } else if (level === "medium") {
+                                    self.IALevel = "medium";
                                 }
                                 if (first === "computer") {
                                     self.phaseOrder = [
